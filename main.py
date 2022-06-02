@@ -2,7 +2,6 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 from sklearn.model_selection import train_test_split
-
 import category_encoders as ce
 
 def main():
@@ -11,7 +10,7 @@ def main():
     x_c = f_n_combined_data.drop(['Actual'], axis = 1) #featured values/categories for face and name
     y_c = f_n_combined_data['Actual'] #target variable for race
 
-    X_c_train, X_c_test, y_c_train, y_c_test = train_test_split(x_c, y_c, test_size = 0.3, random_state=1) # Alex's combined dataset, test size represents proportion of our test size, random state is the particular seed being tested
+    X_c_train, X_c_test, y_c_train, y_c_test = train_test_split(x_c, y_c, test_size = 0.3, random_state=42) # Alex's combined dataset, test size represents proportion of our test size, random state is the particular seed being tested
     
     # changes classfiers to numerical codes that represent headers{}
     combined_encoder = ce.OrdinalEncoder(cols=['First Name', 'Last Name', 'Face', 'Name'])
@@ -40,8 +39,8 @@ def test_individ_trees():
     x_n = name_data.drop(['race'], axis = 1) 
     y_n = name_data['race'] #target variable for name data set
 
-    X_f_train, X_f_test, y_f_train, y_f_test = train_test_split(x_f, y_f, test_size = 0.3, random_state=1) #face, test size represents proportion of our test size, random state is the particular seed being tested
-    X_n_train, X_n_test, y_n_train, y_n_test = train_test_split(x_n, y_n, test_size = 0.3, random_state=1) #name, test size represents proportion of our test size, random state is the particular seed being tested
+    X_f_train, X_f_test, y_f_train, y_f_test = train_test_split(x_f, y_f, test_size = 0.3, random_state=42) #face, test size represents proportion of our test size, random state is the particular seed being tested
+    X_n_train, X_n_test, y_n_train, y_n_test = train_test_split(x_n, y_n, test_size = 0.3, random_state=42) #name, test size represents proportion of our test size, random state is the particular seed being tested
 
     # changes face classfiers to numerical codes that represent headers
     face_encoder = ce.OrdinalEncoder(cols=['First Name', 'Last Name', 'White', 'Black', 'East Asian', 'Other'])
