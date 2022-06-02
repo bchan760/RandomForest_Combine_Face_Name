@@ -10,7 +10,7 @@ def main():
     x_c = f_n_combined_data.drop(['Actual'], axis = 1) #featured values/categories for face and name
     y_c = f_n_combined_data['Actual'] #target variable for race
 
-    X_c_train, X_c_test, y_c_train, y_c_test = train_test_split(x_c, y_c, test_size = 0.3, random_state=42) # Alex's combined dataset, test size represents proportion of our test size, random state is the particular seed being tested
+    X_c_train, X_c_test, y_c_train, y_c_test = train_test_split(x_c, y_c, test_size = 0.2, random_state=42) # Alex's combined dataset, test size represents proportion of our test size, random state is the particular seed being tested
     
     # changes classfiers to numerical codes that represent headers{}
     combined_encoder = ce.OrdinalEncoder(cols=['First Name', 'Last Name', 'Face', 'Name'])
@@ -26,9 +26,22 @@ def main():
     cm = confusion_matrix(y_c_test,y_c_pred)
     print('Confusion matrix:\n', cm)
     print(classification_report(y_c_test, y_c_pred))
+    #  For confusion matrix: 
     #  Values on the diagonal represent the number (or percent, in a normalized confusion matrix) of times where the predicted label matches the true label. 
     #  Values in the other cells represent instances where the classifier mislabeled an observation; 
     #  the column tells us what the classifier predicted, and the row tells us what the right label was.
+    # 
+    #  For classification report:
+    #  The recall means "how many of this class you find over the whole number of element of this class"
+    #  The precision will be "how many are correctly classified among that class"
+    #  The f1-score (used to compare the performance of two classifiers) is the harmonic mean (generally used if data values are ratios of two variables with different measures) 
+    #  between precision & recall
+    #  The support is the number of occurence of the given class in your dataset 
+
+    #  Note: The reason why I used both metrics is because on its own, a classification report tells us generally what kind of errors the model made, 
+    #  but it doesn’t give us specifics. The confusion matrix tells us exactly where mistakes were made, but it doesn’t give us summary metrics like precision, 
+    #  recall, or F1 score. Using both gives a much better understanding of the output and allows us to evaluate the overall performance of the algorithm.
+
     
 def test_individ_trees():
     face_data = pd.read_csv(r'C:\School\decisiontree\Ethnicity_face_cleaned.csv', header = 0) #import given face data set
@@ -39,8 +52,8 @@ def test_individ_trees():
     x_n = name_data.drop(['race'], axis = 1) 
     y_n = name_data['race'] #target variable for name data set
 
-    X_f_train, X_f_test, y_f_train, y_f_test = train_test_split(x_f, y_f, test_size = 0.3, random_state=42) #face, test size represents proportion of our test size, random state is the particular seed being tested
-    X_n_train, X_n_test, y_n_train, y_n_test = train_test_split(x_n, y_n, test_size = 0.3, random_state=42) #name, test size represents proportion of our test size, random state is the particular seed being tested
+    X_f_train, X_f_test, y_f_train, y_f_test = train_test_split(x_f, y_f, test_size = 0.2, random_state=1) #face, test size represents proportion of our test size, random state is the particular seed being tested
+    X_n_train, X_n_test, y_n_train, y_n_test = train_test_split(x_n, y_n, test_size = 0.2, random_state=1) #name, test size represents proportion of our test size, random state is the particular seed being tested
 
     # changes face classfiers to numerical codes that represent headers
     face_encoder = ce.OrdinalEncoder(cols=['First Name', 'Last Name', 'White', 'Black', 'East Asian', 'Other'])
@@ -68,9 +81,11 @@ def test_individ_trees():
     cm_f = confusion_matrix(y_f_test,y_f_pred)
     print('Confusion matrix for name:\n', cm_n) 
     print('Confusion matrix for face:\n', cm_f)
-    # print(classification_report(y_f_test, y_f_pred)) #uncomment next two lines to show accuracy score of face and name + categories being tested
+    # print(classification_report(y_f_test, y_f_pred)) #uncomment next two lines to give a more in-depth evaluation of both face and name 
     # print(classification_report(y_n_test, y_n_pred))
 
+    # Categories being tested: Black, East Asian, Other, White 
+    
 
 if __name__ == "__main__":
     main()
